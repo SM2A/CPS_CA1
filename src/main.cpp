@@ -4,7 +4,7 @@
 #define BAUD_RATE 9600
 
 #define MAX_SPEED 255
-#define MIN_DATA_SIZE 4
+#define MIN_DATA_SIZE 4 
 #define TEMPERATURE 'T'
 #define HUMIDITY 'H'
 
