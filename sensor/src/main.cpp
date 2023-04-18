@@ -18,5 +18,6 @@ void setup()
 void loop()
 {
   delay(1000);
-  Serial.println("H80.0");
+  Serial.println("T30.0");
+  Serial.println("H21.0");
 }

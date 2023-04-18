@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <LiquidCrystal.h>
+#include <SoftwareSerial.h>
 
 #define BAUD_RATE 9600
 
@@ -13,6 +14,9 @@
 
 const int rs = 7, en = 6, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
 LiquidCrystal LCD(rs, en, d4, d5, d6, d7);
+
+const int tx = 13, rx = 12;
+SoftwareSerial Sender(rx, tx);
 
 int irrigationSpeed, irrigationRate;
 float humidity, temperature;
@@ -35,13 +39,11 @@ void setup()
   speedFromTempAndHum = false;
   LCD.begin(LCD_COLUMNS, LCD_ROWS);
   Serial.begin(BAUD_RATE);
+  Sender.begin(BAUD_RATE);
 }
 
 void loop()
 {
-  monitorHandler();
-  delay(1000);
-
   if (Serial.available() > MIN_DATA_SIZE)
   {
     readNewTemperaturAndHumidity();
@@ -49,11 +51,13 @@ void loop()
   if (isNewData)
   {
     isNewData = false;
+    monitorHandler();
     updateMotorSpeed();
   }
   if (speedFromTempAndHum)
   {
-    Serial.println(irrigationSpeed);
+    Sender.print(irrigationSpeed);
+    Sender.print("$");
     speedFromTempAndHum = false;
   }
 }
