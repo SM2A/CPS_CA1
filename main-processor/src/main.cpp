@@ -8,7 +8,7 @@
 #define TEMPERATURE 'T'
 #define HUMIDITY 'H'
 
-#define LCD_COLUMNS 20
+#define LCD_COLUMNS 16
 #define LCD_ROWS 4
 
 const int rs = 7, en = 6, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
@@ -39,7 +39,9 @@ void setup()
 
 void loop()
 {
-  // put your main code here, to run repeatedly:
+  monitorHandler();
+  delay(1000);
+
   if (Serial.available() > MIN_DATA_SIZE)
   {
     readNewTemperaturAndHumidity();
@@ -48,7 +50,6 @@ void loop()
   {
     isNewData = false;
     updateMotorSpeed();
-    monitorHandler();
   }
   if (speedFromTempAndHum)
   {
@@ -130,13 +131,13 @@ void monitorHandler()
 {
   LCD.clear();
   LCD.setCursor(0, 0);
-  LCD.print("Temperature = ");
+  LCD.print("Temp=");
   LCD.println(String(temperature).c_str());
   LCD.setCursor(0, 1);
-  LCD.print("Humidity = ");
+  LCD.print("Hum=");
   LCD.println(String(humidity).c_str());
   LCD.setCursor(0, 2);
-  LCD.println("Irrigation Rate = ");
+  LCD.println("IrrRate=");
   LCD.print(String(irrigationRate));
-  LCD.println(" cc per minute");
+  LCD.println("CCPM");
 }
